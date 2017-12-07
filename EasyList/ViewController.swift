@@ -114,6 +114,17 @@ class ViewController: UIViewController {
     
     @IBAction func shoppingListFieldDoneAction(_ sender: UITextField) {
         //
+        sender.resignFirstResponder()
+    }
+    
+    @IBAction func onTapGestureRecognized(_ sender: AnyObject) {
+        //
+        shoppingListItem1.resignFirstResponder()
+        shoppingListItem2.resignFirstResponder()
+        shoppingListItem3.resignFirstResponder()
+        shoppingListItem4.resignFirstResponder()
+        shoppingListItem5.resignFirstResponder()
+        shoppingListName.resignFirstResponder()
     }
     
     @IBAction func onStepperControlPress(_ sender: UIStepper)  {
@@ -153,6 +164,7 @@ class ViewController: UIViewController {
         shoppingListItem3.text = " "
         shoppingListItem4.text = " "
         shoppingListItem5.text = " "
+        shoppingListName.text = " "
     }
     
     
@@ -167,6 +179,7 @@ class ViewController: UIViewController {
         shoppingListItem3.text = " "
         shoppingListItem4.text = " "
         shoppingListItem5.text = " "
+        shoppingListName.text = " "
         
         //Item label count for UI
         shoppingListItem1CountLabel.text = "0"

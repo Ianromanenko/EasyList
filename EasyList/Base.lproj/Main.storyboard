@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Shopping List" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jyh-4d-8v4">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Easy List" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jyh-4d-8v4">
                                 <rect key="frame" x="62" y="36" width="251" height="55"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="40"/>
                                 <nil key="textColor"/>
@@ -37,6 +37,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="25"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="shoppingListFieldDoneAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="y1I-hZ-qFk"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6XB-Qm-QnB">
                                         <rect key="frame" x="185" y="0.0" width="14" height="34.5"/>
@@ -44,10 +47,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="jFn-Oj-SBQ">
+                                    <stepper opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="jFn-Oj-SBQ">
                                         <rect key="frame" x="249" y="0.0" width="94" height="29"/>
                                         <color key="backgroundColor" red="0.98039215686274506" green="0.72549019607843135" blue="0.31372549019607843" alpha="0.34999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="onStepperControlPress:" destination="BYZ-38-t0r" eventType="valueChanged" id="AdH-Of-8F9"/>
+                                        </connections>
                                     </stepper>
                                 </subviews>
                             </stackView>
@@ -59,6 +65,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="25"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="shoppingListFieldDoneAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="X9N-Ty-l49"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="px2-bW-TWn">
                                         <rect key="frame" x="185" y="0.0" width="14" height="34.5"/>
@@ -66,10 +75,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-Xn-6FB">
+                                    <stepper opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="0rS-Xn-6FB">
                                         <rect key="frame" x="249" y="0.0" width="94" height="29"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.72549019609999998" blue="0.31372549020000001" alpha="0.34999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="onStepperControlPress:" destination="BYZ-38-t0r" eventType="valueChanged" id="tkb-8o-rZx"/>
+                                        </connections>
                                     </stepper>
                                 </subviews>
                             </stackView>
@@ -81,6 +93,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="25"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="shoppingListFieldDoneAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="qNb-Iq-dgp"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Jw-If-M20">
                                         <rect key="frame" x="185" y="0.0" width="14" height="34.5"/>
@@ -88,10 +103,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="6y9-hH-45h">
+                                    <stepper opaque="NO" tag="3" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="6y9-hH-45h">
                                         <rect key="frame" x="249" y="0.0" width="94" height="29"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.72549019609999998" blue="0.31372549020000001" alpha="0.34999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="onStepperControlPress:" destination="BYZ-38-t0r" eventType="valueChanged" id="SDD-ob-zgZ"/>
+                                        </connections>
                                     </stepper>
                                 </subviews>
                             </stackView>
@@ -103,6 +121,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="25"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="shoppingListFieldDoneAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="OrM-Im-SBN"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="89S-fN-EFp">
                                         <rect key="frame" x="185" y="0.0" width="14" height="34.5"/>
@@ -110,10 +131,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="s7g-ky-Z9d">
+                                    <stepper opaque="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="s7g-ky-Z9d">
                                         <rect key="frame" x="249" y="0.0" width="94" height="29"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.72549019609999998" blue="0.31372549020000001" alpha="0.34999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="onStepperControlPress:" destination="BYZ-38-t0r" eventType="valueChanged" id="mc5-Pi-ZUc"/>
+                                        </connections>
                                     </stepper>
                                 </subviews>
                             </stackView>
@@ -125,6 +149,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="25"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="shoppingListFieldDoneAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="5wl-Ee-gCO"/>
+                                        </connections>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PFl-2j-yCP">
                                         <rect key="frame" x="185" y="0.0" width="14" height="34.5"/>
@@ -132,10 +159,13 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="VBu-xg-Yv3">
+                                    <stepper opaque="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="VBu-xg-Yv3">
                                         <rect key="frame" x="249" y="0.0" width="94" height="29"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.72549019609999998" blue="0.31372549020000001" alpha="0.34999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <connections>
+                                            <action selector="onStepperControlPress:" destination="BYZ-38-t0r" eventType="valueChanged" id="C5M-WJ-7gy"/>
+                                        </connections>
                                     </stepper>
                                 </subviews>
                             </stackView>
@@ -153,6 +183,9 @@
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="25"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <action selector="shoppingListFieldDoneAction:" destination="BYZ-38-t0r" eventType="editingDidEnd" id="R8y-T8-deg"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                             </stackView>
@@ -180,9 +213,13 @@
                                     <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="1" green="0.52120530610000004" blue="1" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="onCancelButtonClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="T7k-pI-Xox"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.93725490196078431" blue="0.396078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Tr9-Cn-ncf" firstAttribute="top" secondItem="z1P-Jg-t6W" secondAttribute="bottom" constant="63.5" id="2n6-av-y4J"/>
                             <constraint firstItem="OEH-zg-dKr" firstAttribute="top" secondItem="EVx-Jy-RGd" secondAttribute="bottom" constant="16" id="2r3-CW-Uwq"/>
@@ -216,9 +253,30 @@
                             <constraint firstItem="Tr9-Cn-ncf" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="105" id="y0i-BE-AtC"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="LhG-nA-fHH" appends="YES" id="xBb-f7-6zb"/>
+                        </connections>
                     </view>
+                    <connections>
+                        <outlet property="shoppingListItem1" destination="XDN-P0-UsK" id="TdH-yN-6cQ"/>
+                        <outlet property="shoppingListItem1CountLabel" destination="6XB-Qm-QnB" id="T9N-Jf-r4M"/>
+                        <outlet property="shoppingListItem2" destination="D75-3d-Hss" id="kwR-2J-6pu"/>
+                        <outlet property="shoppingListItem2CountLabel" destination="px2-bW-TWn" id="sie-vY-7Ts"/>
+                        <outlet property="shoppingListItem3" destination="cWb-2A-pLV" id="9i4-x4-8mF"/>
+                        <outlet property="shoppingListItem3CountLabel" destination="3Jw-If-M20" id="HYw-jV-322"/>
+                        <outlet property="shoppingListItem4" destination="Dr7-oe-oqG" id="L6S-2w-JmO"/>
+                        <outlet property="shoppingListItem4CountLabel" destination="89S-fN-EFp" id="36N-Nf-aYQ"/>
+                        <outlet property="shoppingListItem5" destination="E1v-ya-vph" id="t6B-mo-2d0"/>
+                        <outlet property="shoppingListItem5CountLabel" destination="PFl-2j-yCP" id="Rdx-Je-HAd"/>
+                        <outlet property="shoppingListName" destination="qxK-3f-U9g" id="eE6-hM-bQa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="LhG-nA-fHH">
+                    <connections>
+                        <action selector="onTapGestureRecognized:" destination="BYZ-38-t0r" id="ins-gb-kvT"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="136.80000000000001" y="133.5832083958021"/>
         </scene>
