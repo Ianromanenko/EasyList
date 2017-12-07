@@ -2,8 +2,9 @@
 // MAPD 714 - Mid Term Exam
 //
 // App name: Easy List
-// Version: 0.03 - Stepper action implemented
+// Version: 0.04 - Tidy up comments
 // Description: Shopping list application
+// Date: Dec 6 2017
 // Collaborators: 300964200 - Viktor Bilyk
 //                300965775 - Timofei Sopin
 //                300965052 - Yan Romanenko
@@ -53,7 +54,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem1CountLabel.text = ": " + String(shoppingListItem1Value)
+            shoppingListItem1CountLabel.text = ": " + String(shoppingListItem1Value) //display changed count in UI
         case 2: //item 2
             if operation {
                 //PLUS SELECTED
@@ -66,7 +67,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem2CountLabel.text = ": " + String(shoppingListItem2Value)
+            shoppingListItem2CountLabel.text = ": " + String(shoppingListItem2Value) //display changed count in UI
         case 3: //item 3
             if operation {
                 //PLUS SELECTED
@@ -79,7 +80,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem3CountLabel.text = ": " + String(shoppingListItem3Value)
+            shoppingListItem3CountLabel.text = ": " + String(shoppingListItem3Value) //display changed count in UI
         case 4: //item 4
             if operation {
                 //PLUS SELECTED
@@ -92,7 +93,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem4CountLabel.text = ": " + String(shoppingListItem4Value)
+            shoppingListItem4CountLabel.text = ": " + String(shoppingListItem4Value) //display changed count in UI
         case 5: //item 5
             if operation {
                 //PLUS SELECTED
@@ -105,7 +106,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem5CountLabel.text = ": " + String(shoppingListItem5Value)
+            shoppingListItem5CountLabel.text = ": " + String(shoppingListItem5Value) //display changed count in UI
         default: break
         }
        
@@ -117,31 +118,36 @@ class ViewController: UIViewController {
     
     @IBAction func onStepperControlPress(_ sender: UIStepper)  {
         //Action to handle STEPPER press to change list count
+        
         switch sender.value {
-        case 0:
+        case 0: //minus button pressed
             shoppingItemCountChange(itemNumber: sender.tag, operation: false)
-        case 2:
+        case 2: //plus button pressed
             shoppingItemCountChange(itemNumber: sender.tag, operation: true)
         default:
             break
         }
-        sender.value = 1
+        sender.value = 1 //reset stepper state to default
     }
     
     @IBAction func onCancelButtonClick(_ sender: UIButton) {
         //Action to reset app to default state
+        
+        //Item count
         shoppingListItem1Value = 0
         shoppingListItem2Value = 0
         shoppingListItem3Value = 0
         shoppingListItem4Value = 0
         shoppingListItem5Value = 0
         
+        //Item label count for UI
         shoppingListItem1CountLabel.text = "0"
         shoppingListItem2CountLabel.text = "0"
         shoppingListItem3CountLabel.text = "0"
         shoppingListItem4CountLabel.text = "0"
         shoppingListItem5CountLabel.text = "0"
         
+        //Item names
         shoppingListItem1.text = " "
         shoppingListItem2.text = " "
         shoppingListItem3.text = " "
@@ -154,18 +160,22 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         //default values
+        
+        //Item names
         shoppingListItem1.text = " "
         shoppingListItem2.text = " "
         shoppingListItem3.text = " "
         shoppingListItem4.text = " "
         shoppingListItem5.text = " "
         
+        //Item label count for UI
         shoppingListItem1CountLabel.text = "0"
         shoppingListItem2CountLabel.text = "0"
         shoppingListItem3CountLabel.text = "0"
         shoppingListItem4CountLabel.text = "0"
         shoppingListItem5CountLabel.text = "0"
         
+        //Item count
         shoppingListItem1Value = 0
         shoppingListItem2Value = 0
         shoppingListItem3Value = 0
