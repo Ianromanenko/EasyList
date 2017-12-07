@@ -2,7 +2,7 @@
 // MAPD 714 - Mid Term Exam
 //
 // App name: Easy List
-// Version: 0.02 - Logic to handle itme change added, default state of the app
+// Version: 0.03 - Stepper action implemented
 // Description: Shopping list application
 // Collaborators: 300964200 - Viktor Bilyk
 //                300965775 - Timofei Sopin
@@ -53,7 +53,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem1CountLabel.text = String(shoppingListItem1Value)
+            shoppingListItem1CountLabel.text = ": " + String(shoppingListItem1Value)
         case 2: //item 2
             if operation {
                 //PLUS SELECTED
@@ -66,7 +66,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem2CountLabel.text = String(shoppingListItem2Value)
+            shoppingListItem2CountLabel.text = ": " + String(shoppingListItem2Value)
         case 3: //item 3
             if operation {
                 //PLUS SELECTED
@@ -79,7 +79,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem3CountLabel.text = String(shoppingListItem3Value)
+            shoppingListItem3CountLabel.text = ": " + String(shoppingListItem3Value)
         case 4: //item 4
             if operation {
                 //PLUS SELECTED
@@ -92,7 +92,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem4CountLabel.text = String(shoppingListItem4Value)
+            shoppingListItem4CountLabel.text = ": " + String(shoppingListItem4Value)
         case 5: //item 5
             if operation {
                 //PLUS SELECTED
@@ -105,7 +105,7 @@ class ViewController: UIViewController {
                 }
                 
             }
-            shoppingListItem5CountLabel.text = String(shoppingListItem5Value)
+            shoppingListItem5CountLabel.text = ": " + String(shoppingListItem5Value)
         default: break
         }
        
@@ -117,7 +117,15 @@ class ViewController: UIViewController {
     
     @IBAction func onStepperControlPress(_ sender: UIStepper)  {
         //Action to handle STEPPER press to change list count
-        
+        switch sender.value {
+        case 0:
+            shoppingItemCountChange(itemNumber: sender.tag, operation: false)
+        case 2:
+            shoppingItemCountChange(itemNumber: sender.tag, operation: true)
+        default:
+            break
+        }
+        sender.value = 1
     }
     
     @IBAction func onCancelButtonClick(_ sender: UIButton) {
@@ -164,9 +172,6 @@ class ViewController: UIViewController {
         shoppingListItem4Value = 0
         shoppingListItem5Value = 0
         
-        
-        
-        // Do any additional setup after loading the view, typically from a nib.
     }
 
     override func didReceiveMemoryWarning() {
