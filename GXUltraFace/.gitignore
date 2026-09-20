@@ -1,0 +1,4 @@
+GXUltra.xcodeproj/
+*.xcuserdatad/
+.DS_Store
+build/
