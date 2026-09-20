@@ -1,0 +1,83 @@
+# XcodeGen spec: `brew install xcodegen && cd GXUltraFace && xcodegen generate`
+name: GXUltra
+options:
+  bundleIdPrefix: com.easylist
+  createIntermediateGroups: true
+  deploymentTarget:
+    watchOS: "11.0"
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    ENABLE_PREVIEWS: YES
+    # Подставь свой Team ID (в EasyList.xcodeproj используется 2BULHRS882)
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+
+targets:
+  GXUltraWatch:
+    type: application
+    platform: watchOS
+    sources:
+      - path: Sources/GXUltraWatch
+    dependencies:
+      - target: GXUltraComplications
+        embed: true
+    info:
+      path: Sources/GXUltraWatch/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: GX-ULTRA
+        WKApplication: true
+        WKRunsIndependentlyOfCompanionApp: true
+        WKSupportsAlwaysOnDisplay: true
+        WKBackgroundModes: [workout-processing, location]
+        NSHealthShareUsageDescription: Циферблат показывает пульс, шаги, кольца активности и HRV прямо на LCD.
+        NSHealthUpdateUsageDescription: Быстрая тренировка с циферблата записывается в Здоровье.
+        NSLocationWhenInUseUsageDescription: Нужно для компаса, восхода/заката и погоды в модуле SUN/CMP.
+        NSMotionUsageDescription: Барометр и шагомер питают модули ALTI и BARO.
+        UIBackgroundModes: [remote-notification]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.easylist.gxultra.watchkitapp
+        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: ""
+        GENERATE_INFOPLIST_FILE: NO
+    entitlements:
+      path: Sources/GXUltraWatch/Resources/GXUltraWatch.entitlements
+      properties:
+        com.apple.developer.healthkit: true
+        com.apple.developer.healthkit.access: []
+        com.apple.developer.weatherkit: true
+        com.apple.security.application-groups:
+          - group.com.easylist.gxultra
+
+  GXUltraComplications:
+    type: app-extension
+    platform: watchOS
+    sources:
+      # Виджет переиспользует сегментный движок и тему приложения,
+      # но не тянет сервисы — данные он читает из общего снимка.
+      - path: Sources/GXUltraComplications
+      - path: Sources/GXUltraWatch/Face/Segments.swift
+      - path: Sources/GXUltraWatch/Face/Theme.swift
+      - path: Sources/GXUltraWatch/Face/Indicators.swift
+      - path: Sources/GXUltraWatch/Face/TimeFormat.swift
+      - path: Sources/GXUltraWatch/Face/FaceSnapshot.swift
+    info:
+      path: Sources/GXUltraComplications/Info.plist
+      properties:
+        CFBundleDisplayName: GX-ULTRA
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.easylist.gxultra.watchkitapp.complications
+        GENERATE_INFOPLIST_FILE: NO
+    entitlements:
+      path: Sources/GXUltraComplications/GXUltraComplications.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.easylist.gxultra

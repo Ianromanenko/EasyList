@@ -1,0 +1,752 @@
+<title>GX-ULTRA Face Lab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --void:#0a0b0c;
+    --panel:#131517;
+    --panel-2:#1b1e21;
+    --line:#2b2f34;
+    --titan:#b6b0a4;
+    --titan-dark:#6e6a62;
+    --ink:#e8e6e1;
+    --ink-dim:#9a968e;
+    --orange:#ff6a13;
+    --lcd:#0b1010;
+    color-scheme: dark;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 600px at 50% -10%, #1a1d20 0%, var(--void) 62%),
+      var(--void);
+    color:var(--ink);
+    font-family:"Chakra Petch", system-ui, sans-serif;
+    min-height:100%;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding-inline:16px;padding-block:28px 56px}
+
+  header .eyebrow{
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--orange);
+    margin:0 0 6px;
+  }
+  header h1{
+    font-size:clamp(28px,6vw,44px);font-weight:700;margin:0 0 8px;letter-spacing:.01em;
+    text-wrap:balance;
+  }
+  header p{margin:0;max-width:62ch;color:var(--ink-dim);font-size:15px;line-height:1.55}
+
+  .lab{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start;margin-top:30px}
+  .stage{flex:0 0 auto;margin-inline:auto}
+
+  /* Корпус Ultra: титановая рамка, коронка и оранжевая кнопка «Действие» */
+  .case{
+    position:relative;
+    width:256px;padding:11px 13px;
+    border-radius:44px;
+    background:linear-gradient(150deg,#cdc7ba 0%,#8d887e 28%,#5d5952 55%,#a09a8f 100%);
+    box-shadow:0 26px 50px rgba(0,0,0,.62), inset 0 1px 1px rgba(255,255,255,.35);
+  }
+  .case::after{
+    content:"";position:absolute;inset:6px;border-radius:38px;
+    border:1px solid rgba(0,0,0,.35);pointer-events:none;
+  }
+  .screen{
+    width:230px;height:282px;border-radius:34px;overflow:hidden;
+    background:var(--lcd);display:block;cursor:pointer;
+    box-shadow:inset 0 0 0 2px #000;
+  }
+  .crown,.side,.action{position:absolute;background:linear-gradient(90deg,#b8b2a6,#6f6b63);border-radius:3px}
+  .crown{right:-7px;top:86px;width:9px;height:34px;border-radius:4px}
+  .side{right:-5px;top:138px;width:6px;height:44px}
+  .action{left:-5px;top:104px;width:6px;height:40px;background:linear-gradient(90deg,#ff7a2a,#c74a06)}
+  .case figcaption{
+    margin-top:14px;text-align:center;color:var(--ink-dim);
+    font-family:"IBM Plex Mono", monospace;font-size:11px;letter-spacing:.08em;
+  }
+
+  .controls{flex:1 1 300px;min-width:min(100%,300px);display:flex;flex-direction:column;gap:18px}
+  .group h2{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink-dim);margin:0 0 9px;font-weight:500;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:6px}
+  .chip{
+    font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.06em;
+    background:var(--panel);color:var(--ink-dim);border:1px solid var(--line);
+    border-radius:6px;padding:7px 10px;cursor:pointer;transition:.15s;
+  }
+  .chip:hover{border-color:var(--titan-dark);color:var(--ink)}
+  .chip[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#140a03;font-weight:600}
+  .chip:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+
+  .hint{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 15px;
+    font-size:13px;line-height:1.6;color:var(--ink-dim);
+  }
+  .hint b{color:var(--ink);font-weight:600}
+  kbd{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;background:var(--panel-2);
+    border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink);
+  }
+
+  section.block{margin-top:44px}
+  section.block > h2{
+    font-size:13px;font-family:"IBM Plex Mono",monospace;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--orange);margin:0 0 4px;font-weight:500;
+  }
+  section.block > p.lede{margin:0 0 18px;color:var(--ink-dim);font-size:14px;max-width:70ch;line-height:1.6}
+
+  .map{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .map .cell{background:var(--panel);padding:14px 15px}
+  .map .cell h3{
+    margin:0 0 5px;font-size:13px;font-family:"IBM Plex Mono",monospace;
+    letter-spacing:.08em;color:var(--ink);font-weight:600;
+  }
+  .map .cell p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-dim)}
+  .map .cell .src{
+    display:inline-block;margin-top:8px;font-family:"IBM Plex Mono",monospace;font-size:10px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--orange);
+    border:1px solid rgba(255,106,19,.35);border-radius:4px;padding:2px 6px;
+  }
+
+  .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+  .mode{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:12px 13px}
+  .mode code{
+    font-family:"IBM Plex Mono",monospace;color:var(--orange);font-size:12px;
+    letter-spacing:.1em;display:block;margin-bottom:4px;
+  }
+  .mode p{margin:0;font-size:13px;line-height:1.5;color:var(--ink-dim)}
+
+  .note{
+    margin-top:36px;border-left:2px solid var(--orange);background:var(--panel);
+    padding:14px 16px;font-size:13.5px;line-height:1.65;color:var(--ink-dim);border-radius:0 8px 8px 0;
+  }
+  .note b{color:var(--ink)}
+  footer{margin-top:40px;color:var(--titan-dark);font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Casio-модуль для Apple Watch Ultra 3</p>
+    <h1>GX-ULTRA Face Lab</h1>
+    <p>Живой макет циферблата: сегменты рисуются так же, как в watchOS-приложении — с «призраками» выключенных сегментов, наклоном LCD и пиксельной сеткой стекла. Потрогай режимы и темы: это ровно то, что собирается из кода в папке <code>GXUltraFace</code>.</p>
+  </header>
+
+  <div class="lab">
+    <figure class="stage" style="margin:0">
+      <div class="case">
+        <span class="crown"></span><span class="side"></span><span class="action"></span>
+        <canvas id="lcd" class="screen" width="460" height="564" aria-label="Макет циферблата GX-ULTRA"></canvas>
+      </div>
+      <figcaption>тап по стеклу — подсветка · колесо мыши — режим</figcaption>
+    </figure>
+
+    <div class="controls">
+      <div class="group">
+        <h2>Режим</h2>
+        <div class="chips" id="modeChips"></div>
+      </div>
+      <div class="group">
+        <h2>Тема LCD</h2>
+        <div class="chips" id="themeChips"></div>
+      </div>
+      <div class="hint">
+        <b>Что здесь настоящее:</b> время, секунды, дата, номер недели, восход/закат и фаза Луны считаются по-настоящему (формулы NOAA, демо-координаты Киева). Пульс, шаги, высота и давление в макете — демо-значения: на часах они приходят из HealthKit и CoreMotion.
+        <br><br>
+        <b>Клавиши:</b> <kbd>←</kbd> <kbd>→</kbd> режим, <kbd>L</kbd> подсветка, <kbd>space</kbd> действие режима.
+      </div>
+    </div>
+  </div>
+
+  <section class="block">
+    <h2>Каждый элемент — прибор</h2>
+    <p class="lede">Ни одной декоративной иконки: индикатор горит, только если состояние действительно активно, а шкала показывает реальную величину.</p>
+    <div class="map">
+      <div class="cell">
+        <h3>ALM · SIG · LAP</h3>
+        <p>Лампы статуса: включённый будильник, часовой сигнал, работающий секундомер. Погашенные остаются контуром — как на стекле.</p>
+        <span class="src">UserNotifications</span>
+      </div>
+      <div class="cell">
+        <h3>Батарея</h3>
+        <p>Пять ячеек и процент. На зарядке добавляется CHG, ниже 15 % шкала уходит в акцентный цвет.</p>
+        <span class="src">WKInterfaceDevice</span>
+      </div>
+      <div class="cell">
+        <h3>Окно данных</h3>
+        <p>Пульс / шаги / высота / температура / батарея / калории. Тап по окну или кнопка DATA — следующий параметр.</p>
+        <span class="src">HealthKit · CoreMotion</span>
+      </div>
+      <div class="cell">
+        <h3>Шкалы MOV EXE STD</h3>
+        <p>Кольца активности, разложенные в линейные шкалы: читаются боковым зрением, перевыполнение подсвечивается.</p>
+        <span class="src">HKActivitySummary</span>
+      </div>
+      <div class="cell">
+        <h3>Стекло</h3>
+        <p>Тап = кнопка LIGHT: EL-подсветка заливает дисплей на заданные 1–10 секунд и щёлкает тактильно.</p>
+        <span class="src">WKInterfaceDevice.play</span>
+      </div>
+      <div class="cell">
+        <h3>Нижний ряд</h3>
+        <p>MODE · действие режима · ADJ · LIGHT. Подписи меняются под режим — как гравировка вокруг кнопок G-Shock.</p>
+        <span class="src">SwiftUI</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Режимы</h2>
+    <p class="lede">Перебираются колёсиком Digital Crown с тактильными щелчками или кнопкой MODE.</p>
+    <div class="modes">
+      <div class="mode"><code>TIME</code><p>Часы, дата, номер недели, окно данных, шкалы активности.</p></div>
+      <div class="mode"><code>BPM</code><p>Пульс, пульс покоя, HRV, индекс нагрузки CALM/LIGHT/WORK/HARD, гистограмма за час.</p></div>
+      <div class="mode"><code>STW</code><p>Секундомер с сотыми, круги, сплит и средний круг. Переживает перезапуск.</p></div>
+      <div class="mode"><code>TMR</code><p>Таймер с пресетами и локальным уведомлением — сработает с погашенным экраном.</p></div>
+      <div class="mode"><code>ALM</code><p>Будильники и часовой сигнал SIG.</p></div>
+      <div class="mode"><code>DUAL</code><p>Второй часовой пояс с разницей в часах, домашнее время рядом.</p></div>
+      <div class="mode"><code>SUN</code><p>Восход, закат, солнечный полдень, золотой час, шкала светового дня, фаза Луны.</p></div>
+      <div class="mode"><code>CMP</code><p>Компас с вращающейся картушкой, MARK — запомнить азимут и расстояние до точки.</p></div>
+      <div class="mode"><code>ALTI</code><p>Высота, набор от нулевой отметки, давление, тренд и простой прогноз.</p></div>
+      <div class="mode"><code>DIVE</code><p>Только Ultra: глубина, максимум за заплыв, температура воды.</p></div>
+      <div class="mode"><code>WKT</code><p>Быстрый старт тренировки с записью в Здоровье.</p></div>
+    </div>
+  </section>
+
+  <div class="note">
+    <b>Честное ограничение.</b> Apple не открывает API сторонних циферблатов — добавить свой face в список нельзя никому. GX-ULTRA ставится как приложение с поддержкой Always-On: опустил руку — тусклый LCD-кадр, поднял — живые цифры. Запускается с боковой кнопки «Действие», а в <i>Основные → Возврат к циферблату</i> стоит поставить «Через 1 час», чтобы часы не выкидывали в штатный циферблат. Плюс те же LCD-модули доступны осложнениями на штатных циферблатах.
+  </div>
+
+  <footer>GX-ULTRA · watchOS 11+ · SwiftUI · сегменты нарисованы вручную</footer>
+</div>
+
+<script>
+(() => {
+  "use strict";
+
+  // ---- Темы (1:1 с Theme.swift) ----
+  const THEMES = {
+    dw5600:    {title:"DW-5600",  glass:"#9ea8998", ink:"#141a17", accent:"#d95a1a", back:"#73f2b3", ghost:.13},
+    negative:  {title:"NEGATIVE", glass:"#0a0d0d", ink:"#c7e0d1", accent:"#ff9e00", back:"#268c73", ghost:.10},
+    mudmaster: {title:"MUDMASTER",glass:"#3d4030", ink:"#fac24d", accent:"#8cd959", back:"#f2a633", ghost:.12},
+    frogman:   {title:"FROGMAN",  glass:"#0d1f21", ink:"#5cf0cc", accent:"#ff8529", back:"#40d9f2", ghost:.11},
+    nightred:  {title:"NIGHT",    glass:"#080000", ink:"#ff2619", accent:"#ff6b4d", back:"#bf1408", ghost:.07},
+  };
+  THEMES.dw5600.glass = "#9ea899";
+
+  const MODES = ["TIME","BPM","STW","TMR","SUN","CMP","ALTI","DUAL"];
+
+  // ---- Сегментные шрифты ----
+  const S7 = {
+    "0":"abcdef","1":"bc","2":"abgde","3":"abcdg","4":"fgbc","5":"afgcd",
+    "6":"afedcg","7":"abc","8":"abcdefg","9":"abcdfg","-":"g"," ":""
+  };
+  const S14 = {
+    "0":"abcdef","1":"bc","2":"abPQed","3":"abcdPQ","4":"fPQbc","5":"afPQcd",
+    "6":"afedcPQ","7":"abc","8":"abcdefPQ","9":"abcdfPQ",
+    "A":"efabcPQ","B":"abcdQil","C":"afed","D":"abcdil","E":"afedP","F":"afeP",
+    "G":"afedcQ","H":"febcPQ","I":"adil","J":"bcde","K":"fePjk","L":"fed",
+    "M":"efhjbc","N":"efhkbc","O":"abcdef","P":"abefPQ","Q":"abcdefk","R":"abefPQk",
+    "S":"afPQcd","T":"ail","U":"bcdef","V":"femj","W":"femkbc","X":"hjkm",
+    "Y":"hjl","Z":"ajmd","-":"PQ","/":"jm"," ":"","°":"abfP",".":""
+  };
+  const ALL7 = "abcdefg", ALL14 = "abcdefPQilhjkm";
+
+  // ---- Отрисовка одного знака ----
+  function drawChar(ctx, ch, x, y, w, h, style, color, ghost, weight = .19, skew = .055) {
+    const t = Math.min(w,h)*weight, ht = t/2, gap = t*.22;
+    const P = (px,py) => [x + px + (h-py)*skew, y + py];
+    const mid = h/2, left = ht, right = w-ht, cx = w/2;
+
+    function hex(y0,x0,x1){ // горизонтальный сегмент
+      const p=[P(x0,y0),P(x0+ht,y0-ht),P(x1-ht,y0-ht),P(x1,y0),P(x1-ht,y0+ht),P(x0+ht,y0+ht)];
+      ctx.beginPath(); p.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1])); ctx.closePath(); ctx.fill();
+    }
+    function vex(x0,y0,y1){ // вертикальный сегмент
+      const p=[P(x0,y0),P(x0+ht,y0+ht),P(x0+ht,y1-ht),P(x0,y1),P(x0-ht,y1-ht),P(x0-ht,y0+ht)];
+      ctx.beginPath(); p.forEach((pt,i)=>i?ctx.lineTo(pt[0],pt[1]):ctx.moveTo(pt[0],pt[1])); ctx.closePath(); ctx.fill();
+    }
+    function dia(ax,ay,bx,by){
+      const a=P(ax,ay), b=P(bx,by);
+      ctx.beginPath(); ctx.lineWidth=t*.62; ctx.lineCap="round";
+      ctx.strokeStyle=ctx.fillStyle; ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.stroke();
+    }
+    const seg = {
+      a:()=>hex(ht,left+gap,right-gap),
+      d:()=>hex(h-ht,left+gap,right-gap),
+      g:()=>hex(mid,left+gap,right-gap),
+      P:()=>hex(mid,left+gap,cx-gap*.5),
+      Q:()=>hex(mid,cx+gap*.5,right-gap),
+      f:()=>vex(left,ht+gap,mid-gap),
+      b:()=>vex(right,ht+gap,mid-gap),
+      e:()=>vex(left,mid+gap,h-ht-gap),
+      c:()=>vex(right,mid+gap,h-ht-gap),
+      i:()=>vex(cx,ht+gap,mid-gap),
+      l:()=>vex(cx,mid+gap,h-ht-gap),
+      h:()=>dia(left+gap,ht+gap*1.6,cx-gap,mid-gap*1.2),
+      j:()=>dia(right-gap,ht+gap*1.6,cx+gap,mid-gap*1.2),
+      k:()=>dia(cx+gap,mid+gap*1.2,right-gap,h-ht-gap*1.6),
+      m:()=>dia(cx-gap,mid+gap*1.2,left+gap,h-ht-gap*1.6),
+    };
+
+    const table = style === 7 ? S7 : S14;
+    const on = table[ch] ?? table[ch.toUpperCase()] ?? "";
+    const all = style === 7 ? ALL7 : ALL14;
+
+    if (ghost > 0) {
+      ctx.fillStyle = hexA(color, ghost);
+      for (const s of all) if (!on.includes(s)) seg[s]();
+    }
+    ctx.fillStyle = color;
+    for (const s of on) seg[s]();
+  }
+
+  function hexA(hex, alpha){
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${alpha})`;
+  }
+
+  // Строка сегментами. Возвращает итоговую ширину.
+  function segText(ctx, text, x, y, w, h, opts = {}) {
+    const {style = 7, color = "#fff", ghost = 0, spacing = w*.12, weight = .19, blink = true} = opts;
+    let cx = x;
+    for (const ch of text) {
+      if (ch === ":") {
+        const r = w*.09;
+        ctx.fillStyle = (!blink || Math.floor(Date.now()/500)%2===0) ? color : hexA(color,.18);
+        ctx.beginPath(); ctx.arc(cx+w*.17+h*.30*.055, y+h*.32, r, 0, 7); ctx.fill();
+        ctx.beginPath(); ctx.arc(cx+w*.17, y+h*.68, r, 0, 7); ctx.fill();
+        cx += w*.34 + spacing;
+      } else if (ch === " ") {
+        cx += w*.5 + spacing;
+      } else if (ch === ".") {
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.arc(cx+w*.1, y+h-w*.1, w*.085, 0, 7); ctx.fill();
+        cx += w*.28 + spacing;
+      } else {
+        drawChar(ctx, ch, cx, y, w, h, style, color, ghost, weight);
+        cx += w + spacing;
+      }
+    }
+    return cx - x - spacing;
+  }
+
+  function label(ctx, text, x, y, size, color, alpha = .75, align = "left") {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = color;
+    ctx.font = `600 ${size}px "IBM Plex Mono", monospace`;
+    ctx.textAlign = align;
+    ctx.textBaseline = "top";
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  function bar(ctx, x, y, w, h, value, cells, color, ghost, over) {
+    const gap = Math.max(w*.012, 1.5), cw = (w - gap*(cells-1))/cells;
+    const filled = Math.floor(Math.min(value,1)*cells);
+    for (let i = 0; i < cells; i++) {
+      ctx.fillStyle = i < filled ? (value > 1 && over ? over : color) : hexA(color, ghost);
+      ctx.fillRect(x + i*(cw+gap), y, cw, h);
+    }
+  }
+
+  // ---- Астрономия (та же математика, что в SolarCalculator.swift) ----
+  const LAT = 50.45, LON = 30.52; // демо-координаты
+  function solar(date){
+    const jd = date.getTime()/86400000 + 2440587.5;
+    const n = Math.round(jd - 2451545.0 + 0.0008);
+    const jStar = n - LON/360;
+    const M = (357.5291 + 0.98560028*jStar) % 360, Mr = M*Math.PI/180;
+    const C = 1.9148*Math.sin(Mr) + 0.02*Math.sin(2*Mr) + 0.0003*Math.sin(3*Mr);
+    const lam = (M + C + 180 + 102.9372) % 360, lr = lam*Math.PI/180;
+    const jT = 2451545.0 + jStar + 0.0053*Math.sin(Mr) - 0.0069*Math.sin(2*lr);
+    const dec = Math.asin(Math.sin(lr)*Math.sin(23.44*Math.PI/180));
+    const latR = LAT*Math.PI/180;
+    const ev = ang => {
+      const cosW = (Math.sin(ang*Math.PI/180) - Math.sin(latR)*Math.sin(dec))/(Math.cos(latR)*Math.cos(dec));
+      if (cosW < -1 || cosW > 1) return null;
+      const w = Math.acos(cosW)*180/Math.PI;
+      return [fromJD(jT - w/360), fromJD(jT + w/360)];
+    };
+    const off = ev(-0.833), gold = ev(6);
+    return {rise: off && off[0], set: off && off[1], noon: fromJD(jT), golden: gold && gold[1]};
+  }
+  const fromJD = jd => new Date((jd - 2440587.5)*86400000);
+  function moon(date){
+    const days = (date - new Date(947182440000))/86400000;
+    let phase = (days/29.530588853) % 1; if (phase < 0) phase += 1;
+    return {phase, illum:(1 - Math.cos(2*Math.PI*phase))/2};
+  }
+  const MOON_NAMES = [[.03,"NEW"],[.22,"WAX CR"],[.28,"1ST QT"],[.47,"WAX GB"],[.53,"FULL"],[.72,"WAN GB"],[.78,"3RD QT"],[.97,"WAN CR"],[1,"NEW"]];
+
+  const pad = n => String(n).padStart(2,"0");
+  const WD = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+  const hhmm = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  function weekNo(d){
+    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay()||7));
+    return Math.ceil(((t - Date.UTC(t.getUTCFullYear(),0,1))/86400000 + 1)/7);
+  }
+
+  // ---- Состояние ----
+  const state = {
+    theme: "negative",
+    mode: "TIME",
+    backlightUntil: 0,
+    swStart: null, swAcc: 0, laps: [],
+    tmrEnd: null, tmrDur: 300,
+    heading: 34, marked: null,
+    hr: 68, steps: 8420, alt: 182, press: 1013,
+    hrHistory: Array.from({length:28}, (_,i) => 62 + Math.sin(i/3)*9 + Math.random()*4),
+    pressHistory: Array.from({length:30}, (_,i) => 1010 + Math.sin(i/7)*3 + Math.random()),
+  };
+
+  const canvas = document.getElementById("lcd");
+  const ctx = canvas.getContext("2d");
+  const W = 460, H = 564; // рабочая система координат
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  ctx.scale(dpr, dpr);
+
+  const hitAreas = [];
+
+  function draw(){
+    const T = THEMES[state.theme];
+    const now = new Date();
+    const lit = Date.now() < state.backlightUntil;
+    hitAreas.length = 0;
+
+    // Стекло
+    ctx.fillStyle = T.glass;
+    ctx.fillRect(0,0,W,H);
+    if (lit) {
+      const g = ctx.createRadialGradient(W/2,H/2,10,W/2,H/2,H*.75);
+      g.addColorStop(0, hexA(T.back,.8)); g.addColorStop(1, hexA(T.back,.18));
+      ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+    }
+    // Пиксельная сетка
+    ctx.strokeStyle = hexA(T.ink,.05); ctx.lineWidth = .5;
+    ctx.beginPath();
+    for (let x=0; x<W; x+=6){ ctx.moveTo(x,0); ctx.lineTo(x,H); }
+    for (let y=0; y<H; y+=6){ ctx.moveTo(0,y); ctx.lineTo(W,y); }
+    ctx.stroke();
+    // Виньетка
+    const v = ctx.createRadialGradient(W/2,H/2,H*.28,W/2,H/2,H*.75);
+    v.addColorStop(0,"rgba(0,0,0,0)"); v.addColorStop(1,"rgba(0,0,0,.38)");
+    ctx.fillStyle = v; ctx.fillRect(0,0,W,H);
+
+    drawStatus(T, now);
+    const body = {TIME:drawTime, BPM:drawBpm, STW:drawStw, TMR:drawTmr,
+                  SUN:drawSun, CMP:drawCmp, ALTI:drawAlti, DUAL:drawDual}[state.mode];
+    body(T, now);
+    drawKeys(T);
+
+    requestAnimationFrame(draw);
+  }
+
+  function drawStatus(T, now){
+    segText(ctx, state.mode, 18, 20, 16, 26, {style:14, color:T.accent, ghost:0, spacing:3, weight:.2});
+    const lamps = [["ALM", true], ["SIG", true], ["LAP", state.swStart !== null]];
+    let x = 108;
+    lamps.forEach(([txt,on]) => { label(ctx, txt, x, 26, 14, T.ink, on ? 1 : .16); x += 40; });
+    // Батарея
+    bar(ctx, W-108, 26, 52, 12, .74, 5, T.ink, T.ghost);
+    label(ctx, "74%", W-48, 24, 15, T.ink, .9);
+  }
+
+  function drawTime(T, now){
+    // Дата
+    segText(ctx, WD[now.getDay()], 18, 62, 18, 28, {style:14, color:T.ink, ghost:0, spacing:3});
+    segText(ctx, `${now.getMonth()+1}-${pad(now.getDate())}`, 100, 62, 18, 28, {style:7, color:T.ink, ghost:0, spacing:3});
+    label(ctx, `WK${weekNo(now)}`, W-18, 66, 16, T.ink, .6, "right");
+
+    // Главное время
+    segText(ctx, hhmm(now), 14, 108, 62, 98, {style:7, color:T.ink, ghost:T.ghost, spacing:5, weight:.175});
+    segText(ctx, pad(now.getSeconds()), 356, 116, 26, 40, {style:7, color:T.accent, ghost:T.ghost, spacing:3, weight:.2});
+
+    // Окна данных
+    cell(T, 18, 226, "HR", String(state.hr), "BPM", true);
+    cell(T, 246, 226, "MOVE", "412", "KCAL", false);
+
+    // Шкалы активности
+    const rows = [["MOV", .82],["EXE", 1.1],["STD", .58]];
+    rows.forEach(([name, val], i) => {
+      const y = 300 + i*26;
+      label(ctx, name, 18, y-2, 15, T.ink, .55);
+      bar(ctx, 68, y, W-86, 11, val, 14, T.ink, T.ghost, T.accent);
+    });
+  }
+
+  function cell(T, x, y, name, value, unit, accent){
+    label(ctx, name, x, y, 15, T.ink, .55);
+    const w = segText(ctx, value, x, y+20, 22, 34, {style:/[A-Z]/.test(value)?14:7, color: accent?T.accent:T.ink, ghost:0, spacing:3, weight:.2});
+    if (unit) label(ctx, unit, x + w + 8, y+40, 15, accent?T.accent:T.ink, .7);
+  }
+
+  function drawBpm(T){
+    segText(ctx, String(state.hr), 26, 76, 56, 86, {style:7, color:T.ink, ghost:T.ghost, spacing:5, weight:.18});
+    label(ctx, "BPM", 212, 128, 20, T.accent, 1);
+    label(ctx, "CALM", 212, 152, 16, T.ink, .7);
+    cell(T, 18, 190, "REST", "54", "BPM", false);
+    cell(T, 246, 190, "HRV", "62", "MS", false);
+    cell(T, 18, 262, "STEPS", String(state.steps), null, false);
+    cell(T, 246, 262, "DIST", "6.1", "KM", false);
+    label(ctx, "LAST 60 MIN", 18, 336, 14, T.ink, .5);
+    histogram(T, state.hrHistory, 18, 356, W-36, 52, T.accent);
+  }
+
+  function histogram(T, values, x, y, w, h, color){
+    const lo = Math.min(...values), hi = Math.max(...values), span = Math.max(hi-lo, .001);
+    const bw = (w - (values.length-1)*2)/values.length;
+    values.forEach((v,i) => {
+      const bh = Math.max(h*(.12 + .88*(v-lo)/span), 2);
+      ctx.fillStyle = color;
+      ctx.fillRect(x + i*(bw+2), y + h - bh, bw, bh);
+    });
+    ctx.fillStyle = hexA(T.ink, T.ghost);
+    ctx.fillRect(x, y+h, w, 1);
+  }
+
+  function swElapsed(){
+    return state.swAcc + (state.swStart ? (Date.now()-state.swStart)/1000 : 0);
+  }
+  function fmt(sec){
+    return `${pad(Math.floor(sec/60))}:${pad(Math.floor(sec%60))}`;
+  }
+
+  function drawStw(T){
+    const e = swElapsed();
+    segText(ctx, fmt(e), 30, 92, 54, 84, {style:7, color:T.ink, ghost:T.ghost, spacing:5, weight:.18});
+    label(ctx, state.swStart ? "RUN" : "HOLD", 30, 192, 17, state.swStart ? T.accent : T.ink, 1);
+    segText(ctx, "."+pad(Math.floor((e%1)*100)), 96, 186, 24, 36, {style:7, color:T.accent, ghost:0, spacing:2, weight:.2});
+    if (state.laps.length){
+      cell(T, 18, 236, `LAP ${state.laps.length}`, fmt(state.laps[0]), null, true);
+      cell(T, 246, 236, "AVG", fmt(state.laps[0]/state.laps.length), null, false);
+      state.laps.slice(0,5).forEach((lap,i) => {
+        const y = 312 + i*24;
+        label(ctx, pad(state.laps.length-i), 22, y, 15, T.ink, .5);
+        label(ctx, fmt(lap), W-22, y, 16, T.ink, .9, "right");
+      });
+    } else {
+      label(ctx, "SPACE / START — ПУСК", 22, 250, 15, T.ink, .5);
+    }
+  }
+
+  function drawTmr(T){
+    const left = state.tmrEnd ? Math.max((state.tmrEnd - Date.now())/1000, 0) : state.tmrDur;
+    segText(ctx, fmt(left), 30, 96, 56, 88, {style:7, color:T.ink, ghost:T.ghost, spacing:5, weight:.18});
+    bar(ctx, 24, 208, W-48, 12, 1 - left/state.tmrDur, 20, left < 10 ? T.accent : T.ink, T.ghost);
+    label(ctx, state.tmrEnd ? "RUN" : "SET", 24, 236, 17, state.tmrEnd ? T.accent : T.ink, 1);
+    label(ctx, "REPEAT", W-24, 238, 15, T.ink, .3, "right");
+    ["1M","3M","5M","10M","25M","1H"].forEach((p,i) => {
+      const w = (W-48-5*6)/6, x = 24 + i*(w+6), on = [60,180,300,600,1500,3600][i] === state.tmrDur;
+      ctx.fillStyle = on ? T.accent : hexA(T.ink,.1);
+      roundRect(x, 272, w, 34, 7); ctx.fill();
+      label(ctx, p, x+w/2, 281, 15, on ? T.glass : T.ink, 1, "center");
+      hitAreas.push({x, y:272, w, h:34, action:() => { state.tmrDur = [60,180,300,600,1500,3600][i]; state.tmrEnd = null; }});
+    });
+  }
+
+  function drawSun(T, now){
+    const s = solar(now), m = moon(now);
+    const daylight = s.rise && s.set && now >= s.rise && now <= s.set;
+    cell(T, 18, 66, "SUNRISE", s.rise ? hhmm(s.rise) : "--:--", null, !daylight);
+    cell(T, 246, 66, "SUNSET", s.set ? hhmm(s.set) : "--:--", null, daylight);
+    const prog = s.rise && s.set ? Math.min(Math.max((now - s.rise)/(s.set - s.rise), 0), 1) : 0;
+    bar(ctx, 18, 146, W-36, 12, prog, 24, T.ink, T.ghost, T.accent);
+    const dayLen = (s.set - s.rise)/3600000;
+    label(ctx, `ДЕНЬ ${Math.floor(dayLen)}H ${pad(Math.round((dayLen%1)*60))}M`, 18, 166, 14, T.ink, .6);
+    // После заката считаем до следующего восхода — иначе строка врёт нулями.
+    const nextRise = new Date(s.rise.getTime() + 86400000);
+    const remain = daylight ? (s.set - now)/3600000 : (nextRise - now)/3600000;
+    const prefix = daylight ? "ДО ЗАКАТА" : "ДО ВОСХОДА";
+    label(ctx, `${prefix} ${Math.floor(remain)}H ${pad(Math.round((remain%1)*60))}M`, W-18, 166, 14, T.accent, 1, "right");
+    cell(T, 18, 196, "GOLDEN", s.golden ? hhmm(s.golden) : "--:--", null, false);
+    cell(T, 246, 196, "NOON", hhmm(s.noon), null, false);
+
+    // Луна с терминатором
+    const cxm = 48, cym = 306, r = 26;
+    ctx.strokeStyle = hexA(T.ink,.4); ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(cxm, cym, r, 0, 7); ctx.stroke();
+    const k = Math.cos(2*Math.PI*m.phase);
+    ctx.fillStyle = hexA(T.accent,.85);
+    ctx.beginPath();
+    ctx.moveTo(cxm, cym-r);
+    ctx.arc(cxm, cym, r, -Math.PI/2, Math.PI/2, m.phase > .5);
+    ctx.bezierCurveTo(cxm - r*k*1.33, cym + r*.55, cxm - r*k*1.33, cym - r*.55, cxm, cym-r);
+    ctx.fill();
+    const name = MOON_NAMES.find(([p]) => m.phase < p)[1];
+    segText(ctx, name, 92, 288, 16, 24, {style:14, color:T.ink, ghost:0, spacing:3});
+    label(ctx, `${Math.round(m.illum*100)}% · ${(m.phase*29.53).toFixed(1)}d`, 92, 320, 15, T.ink, .6);
+  }
+
+  function drawCmp(T){
+    const cx = W/2, cy = 186, r = 118;
+    for (let tick = 0; tick < 360; tick += 15){
+      const ang = (tick - state.heading - 90)*Math.PI/180;
+      const major = tick % 90 === 0, inner = r - (major ? 22 : 11);
+      ctx.strokeStyle = major ? T.ink : hexA(T.ink,.45);
+      ctx.lineWidth = major ? 3 : 1.5;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(ang)*inner, cy + Math.sin(ang)*inner);
+      ctx.lineTo(cx + Math.cos(ang)*r, cy + Math.sin(ang)*r);
+      ctx.stroke();
+    }
+    [["N",0],["E",90],["S",180],["W",270]].forEach(([t,deg]) => {
+      const ang = (deg - state.heading - 90)*Math.PI/180;
+      label(ctx, t, cx + Math.cos(ang)*(r-42) , cy + Math.sin(ang)*(r-42) - 8, 20, t==="N"?T.accent:T.ink, 1, "center");
+    });
+    if (state.marked !== null){
+      const ang = (state.marked - state.heading - 90)*Math.PI/180;
+      ctx.fillStyle = T.accent;
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(ang)*r, cy + Math.sin(ang)*r);
+      ctx.lineTo(cx + Math.cos(ang-.12)*(r-20), cy + Math.sin(ang-.12)*(r-20));
+      ctx.lineTo(cx + Math.cos(ang+.12)*(r-20), cy + Math.sin(ang+.12)*(r-20));
+      ctx.fill();
+    }
+    ctx.fillStyle = T.ink;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy-r-2); ctx.lineTo(cx-9, cy-r+16); ctx.lineTo(cx+9, cy-r+16); ctx.fill();
+
+    segText(ctx, pad(Math.round(state.heading)).padStart(3,"0"), cx-58, cy-30, 34, 52, {style:7, color:T.ink, ghost:T.ghost, spacing:4});
+    const dirs = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"];
+    label(ctx, dirs[Math.round(state.heading/22.5)%16], cx, cy+30, 20, T.accent, 1, "center");
+    cell(T, 18, 330, "MARK", state.marked !== null ? pad(Math.round(state.marked)).padStart(3,"0") : "---", "°", state.marked !== null);
+    cell(T, 246, 330, "DIST", state.marked !== null ? "340" : "---", "M", false);
+  }
+
+  function drawAlti(T){
+    segText(ctx, String(state.alt), 34, 80, 48, 74, {style:7, color:T.ink, ghost:T.ghost, spacing:4, weight:.18});
+    label(ctx, "M", 250, 132, 20, T.accent, 1);
+    cell(T, 18, 178, "ОТ НУЛЯ", "+24", "M", true);
+    cell(T, 246, 178, "PRESS", String(state.press), "HPA", false);
+    label(ctx, "ТРЕНД ДАВЛЕНИЯ", 18, 250, 14, T.ink, .5);
+    segText(ctx, "STDY", W-92, 246, 14, 20, {style:14, color:T.accent, ghost:0, spacing:2});
+    histogram(T, state.pressHistory, 18, 272, W-36, 54, T.ink);
+    cell(T, 18, 348, "ПРОГНОЗ", "STABLE", null, true);
+    cell(T, 246, 348, "TEMP", "14", "°C", false);
+  }
+
+  function drawDual(T, now){
+    segText(ctx, "KYIV", 18, 62, 22, 34, {style:14, color:T.accent, ghost:0, spacing:3});
+    segText(ctx, hhmm(now), 22, 112, 56, 86, {style:7, color:T.ink, ghost:T.ghost, spacing:5, weight:.18});
+    label(ctx, WD[now.getDay()], 22, 214, 16, T.ink, .8);
+    label(ctx, `${now.getMonth()+1}-${pad(now.getDate())}`, 92, 214, 16, T.ink, .8);
+    label(ctx, "+0H", 168, 214, 16, T.accent, 1);
+    ctx.fillStyle = hexA(T.ink,.2); ctx.fillRect(18, 248, W-36, 1);
+    const home = new Date(now.getTime() - 7*3600000);
+    cell(T, 18, 266, "HOME TORONT", hhmm(home), null, false);
+    cell(T, 246, 266, "SEC", pad(now.getSeconds()), null, false);
+    label(ctx, "ТАП — СЛЕДУЮЩИЙ ГОРОД", W/2, 350, 14, T.ink, .45, "center");
+  }
+
+  function roundRect(x,y,w,h,r){
+    ctx.beginPath();
+    ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+  }
+
+  function keySet(){
+    switch(state.mode){
+      case "STW": return [["MODE", nextMode], [state.swStart?"STOP":"START", toggleSw, true], [state.swStart?"LAP":"RESET", lapSw], ["LIGHT", light]];
+      case "TMR": return [["MODE", nextMode], [state.tmrEnd?"STOP":"START", toggleTmr, true], ["RESET", () => state.tmrEnd = null], ["LIGHT", light]];
+      case "CMP": return [["MODE", nextMode], [state.marked===null?"MARK":"CLR", markBearing, true], ["ADJ", light], ["LIGHT", light]];
+      case "ALTI":return [["MODE", nextMode], ["ZERO", () => state.alt = 0, true], ["ADJ", light], ["LIGHT", light]];
+      default:    return [["MODE", nextMode], ["DATA", () => state.hr = 58 + Math.floor(Math.random()*40), true], ["ADJ", light], ["LIGHT", light]];
+    }
+  }
+
+  function drawKeys(T){
+    const keys = keySet(), gap = 8, w = (W - 28 - gap*3)/4, y = H - 52;
+    keys.forEach(([text, action, accent], i) => {
+      const x = 14 + i*(w+gap);
+      ctx.fillStyle = accent ? T.accent : hexA(T.ink,.1);
+      roundRect(x, y, w, 36, 8); ctx.fill();
+      label(ctx, text, x + w/2, y + 10, 16, accent ? T.glass : T.ink, 1, "center");
+      hitAreas.push({x, y, w, h:36, action});
+    });
+  }
+
+  // ---- Действия ----
+  const light = () => state.backlightUntil = Date.now() + 3000;
+  const nextMode = () => setMode(MODES[(MODES.indexOf(state.mode)+1) % MODES.length]);
+  function toggleSw(){
+    if (state.swStart){ state.swAcc += (Date.now()-state.swStart)/1000; state.swStart = null; }
+    else state.swStart = Date.now();
+  }
+  function lapSw(){
+    if (state.swStart) state.laps.unshift(swElapsed());
+    else { state.swAcc = 0; state.laps = []; }
+  }
+  const toggleTmr = () => state.tmrEnd = state.tmrEnd ? null : Date.now() + state.tmrDur*1000;
+  const markBearing = () => state.marked = state.marked === null ? state.heading : null;
+
+  function primary(){
+    ({STW:toggleSw, TMR:toggleTmr, CMP:markBearing, ALTI:() => state.alt = 0}[state.mode] || light)();
+  }
+
+  function setMode(mode){
+    state.mode = mode;
+    [...document.querySelectorAll("#modeChips .chip")].forEach(c =>
+      c.setAttribute("aria-pressed", String(c.dataset.mode === mode)));
+  }
+
+  // ---- Управление ----
+  canvas.addEventListener("click", e => {
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left) * (W/rect.width);
+    const y = (e.clientY - rect.top) * (H/rect.height);
+    const hit = hitAreas.find(a => x >= a.x && x <= a.x+a.w && y >= a.y && y <= a.y+a.h);
+    if (hit) hit.action(); else light();
+  });
+  canvas.addEventListener("wheel", e => {
+    e.preventDefault();
+    const i = MODES.indexOf(state.mode);
+    setMode(MODES[(i + (e.deltaY > 0 ? 1 : MODES.length-1)) % MODES.length]);
+  }, {passive:false});
+  window.addEventListener("keydown", e => {
+    const i = MODES.indexOf(state.mode);
+    if (e.key === "ArrowRight") setMode(MODES[(i+1)%MODES.length]);
+    else if (e.key === "ArrowLeft") setMode(MODES[(i-1+MODES.length)%MODES.length]);
+    else if (e.key.toLowerCase() === "l") light();
+    else if (e.code === "Space"){ e.preventDefault(); primary(); }
+  });
+
+  // Компас живёт: лёгкое блуждание курса, как у настоящего магнитометра
+  setInterval(() => {
+    state.heading = (state.heading + (Math.random()-.45)*3 + 360) % 360;
+    state.hr = Math.max(52, Math.min(96, state.hr + Math.round((Math.random()-.5)*4)));
+    state.hrHistory = [...state.hrHistory.slice(1), state.hr];
+  }, 1200);
+
+  // ---- Чипы ----
+  const modeChips = document.getElementById("modeChips");
+  MODES.forEach(m => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.textContent = m; b.dataset.mode = m;
+    b.id = "mode-" + m.toLowerCase();
+    b.setAttribute("aria-pressed", String(m === state.mode));
+    b.onclick = () => setMode(m);
+    modeChips.append(b);
+  });
+  const themeChips = document.getElementById("themeChips");
+  Object.entries(THEMES).forEach(([key, t]) => {
+    const b = document.createElement("button");
+    b.className = "chip"; b.textContent = t.title; b.dataset.theme = key;
+    b.id = "theme-" + key;
+    b.setAttribute("aria-pressed", String(key === state.theme));
+    b.onclick = () => {
+      state.theme = key;
+      [...themeChips.children].forEach(c => c.setAttribute("aria-pressed", String(c.dataset.theme === key)));
+    };
+    themeChips.append(b);
+  });
+
+  draw();
+})();
+</script>
